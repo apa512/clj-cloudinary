@@ -3,12 +3,12 @@
             [clj-http.client :as http]
             [cloudinary]))
 
-(defn api-url [cloud-name & path]
-  (string/join "/" (into ["https://api.cloudinary.com/v1_1" cloud-name]
-                         path)))
-
 (defn delete-all-resources
   ([file-type type {:keys [api_key api_secret cloud_name] :as opts}]
-   (http/delete (api-url cloud_name "resources" file-type type)
+   (http/delete (cloudinary/api-url cloud_name "resources" file-type type)
                 {:basic-auth [api_key api_secret]
-                 :query-params {:all true}})))
+                 :query-params {:all true}}))
+  ([file-type opts]
+   (delete-all-resources file-type "upload" opts))
+  ([opts]
+   (delete-all-resources "image" "upload" opts)))

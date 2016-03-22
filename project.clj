@@ -1,4 +1,4 @@
-(defproject com.apa512/cloudinary "0.2.0"
+(defproject com.apa512/cloudinary "0.2.1"
   :description "A client designed to interact with the Cloudinary service"
   :url "https://github.com/apa512/clj-cloudinary"
   :license {:name "Eclipse Public License"

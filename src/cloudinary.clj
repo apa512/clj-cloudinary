@@ -3,6 +3,10 @@
             [clj-http.client :as http]
             [pandect.algo.sha1 :refer [sha1]]))
 
+(defn api-url [cloud-name & path]
+  (string/join "/" (into ["https://api.cloudinary.com/v1_1" cloud-name]
+                         path)))
+
 (defn signature [opts]
   (sha1 (str (->> (dissoc opts :api_key :api_secret :cloud_name)
                   (sort-by first)
@@ -15,8 +19,7 @@
    (assert (every? seq [api_key api_secret cloud_name]))
    (let [timestamp (quot (System/currentTimeMillis) 1000)
          opts (assoc opts :timestamp timestamp)]
-     (http/post (string/join "/" ["https://api.cloudinary.com/v1_1"
-                                  cloud_name file-type "upload"])
+     (http/post (api-url cloud_name file-type "upload")
                 {:form-params (assoc opts
                                      :signature (signature opts)
                                      :file file)})))
